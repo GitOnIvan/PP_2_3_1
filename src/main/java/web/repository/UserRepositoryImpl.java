@@ -1,17 +1,18 @@
-package web.dao;
+package web.repository;
 
 
 import org.springframework.stereotype.Repository;
 import web.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 @Transactional
-public class UserDAOImpl implements UserDAO {
+public class UserRepositoryImpl implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -37,19 +38,21 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getUsersList() {
-        return users;
+
+        return entityManager.createQuery("select u from User u ", User.class).getResultList();
     }
 
     @Override
     public User getUserByID(long id) {
+        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id =:id", User.class);
+        query.setParameter("id", id);
 
-        return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
+        return query.getResultList().stream().findAny().orElse(null);
     }
 
     @Override
     public void addNewUser(User user) {
-        user.setId(++USER_COUNT);
-        users.add(user);
+        entityManager.persist(user);
 
     }
 
