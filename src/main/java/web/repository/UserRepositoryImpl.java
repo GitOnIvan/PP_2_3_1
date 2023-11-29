@@ -37,10 +37,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
-
-
-
-
     @Override
     public void updateUser(long id, User updatedUser) {
         User userToBeUpdate = getUserByID(id);
