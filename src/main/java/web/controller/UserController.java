@@ -2,6 +2,7 @@ package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
@@ -77,6 +78,13 @@ public class UserController {
         userService.deleteUser(id);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/user")
+    public String getUser(@RequestParam(value = "id") Long id, Model model) {
+        model.addAttribute("userSolo", userService.getUserByID(id));
+
+        return "user";
     }
 
 

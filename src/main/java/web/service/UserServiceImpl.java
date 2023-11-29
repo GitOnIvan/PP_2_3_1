@@ -2,13 +2,14 @@ package web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.repository.UserRepository;
 import web.model.User;
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
@@ -20,34 +21,36 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    @Transactional
+
     public List<User> getUsersList() {
-        return userRepository.findAll();
+        return userRepository.getUsersList();
     }
 
     @Override
-    @Transactional
+
     public User getUserByID(long id) {
-        return userRepository.findOne(id)
+        return userRepository.getUserByID(id);
     }
 
     @Override
     @Transactional
     public void addNewUser(User user) {
-        userRepository.saveAndFlush(user);
+        userRepository.addNewUser(user);
+
     }
 
     @Override
     @Transactional
     public void updateUser(long id, User updatedUser) {
-        userDAO.updateUser(id, updatedUser);
+        userRepository.updateUser(id, updatedUser);
+
 
     }
 
     @Override
     @Transactional
     public void deleteUser(long id) {
-        userRepository.deleteById(id);
+    userRepository.deleteUser(id);
 
     }
 }
