@@ -1,6 +1,13 @@
 package web.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name="users")
@@ -10,15 +17,24 @@ public class User {
     @Column(name = "id")
     private long id;
 
+
+    @Size(min = 2, max = 30, message = "between 2 and 30 characters")
     @Column(name = "name")
     private String name;
 
+
+    @Size(min = 2, max = 30, message = "between 2 and 30 characters")
     @Column(name = "lastname")
     private String lastname;
 
+
+    @Size(min = 4, max = 6, message = "between 4 and 6 characters")
     @Column(name = "sex")
     private String sex;
 
+    @PositiveOrZero(message = "should no be less then 0")
+    @NotNull(message = "should not be empty")
+    @Digits(integer = 3, fraction = 0, message = "between 1 and 3 characters")
     @Column(name = "age")
     private int age;
 
